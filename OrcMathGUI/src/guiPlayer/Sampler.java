@@ -15,7 +15,7 @@ import guiTeacher.interfaces.KeyedComponent;
 import guiTeacher.interfaces.Visible;
 import guiTeacher.userInterfaces.FullFunctionScreen;
 
-public class Sampler extends GUIApplication {
+public class Sampler extends Super {
 
 	/**
 	 * 
@@ -120,7 +120,7 @@ public class Sampler extends GUIApplication {
 			}); 
 			viewObjects.add(cb);
 			
-			viewObjects.add(Keys(40,40,100,100));
+			viewObjects.add(new Keys(40, 40, 100, 100));
 		}
 		
 		public void mouseDragged(MouseEvent m) {
