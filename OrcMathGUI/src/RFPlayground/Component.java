@@ -1,4 +1,4 @@
-package mystuff;
+package RFPlayground;
 
 public class Component {
 

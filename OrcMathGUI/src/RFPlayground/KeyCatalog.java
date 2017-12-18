@@ -1,10 +1,11 @@
-package mystuff;
+package RFPlayground;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class KeyCatalog {
 
-	private ArrayList<Keys> keys;
+	private static ArrayList<Keys> keys;
 	
 	public KeyCatalog() {
 		ArrayList<Keys> keys = new ArrayList<Keys>();
@@ -16,7 +17,20 @@ public class KeyCatalog {
 	public static void main(String[] args) {
 		KeyCatalog catalog = new KeyCatalog();
 		System.out.println(catalog.getCSVContent());
-		
+		System.out.println("Please add a key.");
+		String name = in.nextLine();
+		System.out.println("Please add a material.");
+		String material = in.nextLine();
+		System.out.println("Please add a shape.");
+		String shape = in.nextLine();
+		Keys newKey = Keys(name,material,shape);
+		Scanner in = new Scanner(System.in);
+		String s = in.nextLine();
+	}
+	
+	private static void addEntry(String model, String material, String shape) {
+		keys.add(new Keys(model, material, shape));
+		System.out.println("The key is now added!");
 	}
 	
 	public String getCSVContent() {
