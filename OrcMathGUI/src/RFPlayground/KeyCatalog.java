@@ -47,9 +47,9 @@ public class KeyCatalog {
 
 	public void addEntry() {
 		String[] test = {"Age", "Name"};
-		String[] thing = new String[Keys.length()];
+		String[] thing = new String[keys.length()];
 
-		for(int i = 0; i < Keys.length(); i++) {
+		for(int i = 0; i < keys.length(); i++) {
 			if(i == 2)
 				System.out.println("Please input type of Key");
 			else
@@ -57,7 +57,7 @@ public class KeyCatalog {
 			String s = in.nextLine();
 			thing[i] = s;
 		}
-		Keys.add(new Key(Integer.parseInt(thing[0]), thing[1], thing[2]));
+		keys.add(new Key(Integer.parseInt(thing[0]), thing[1], thing[2]));
 	}
 
 }
