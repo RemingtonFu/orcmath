@@ -41,13 +41,24 @@ public class catalogscreen extends FullFunctionScreen implements FileRequester{
 			}
 		});
 		viewObjects.add(createButton);
+		add = new Button(40, 40, 200, 30, "Text goes here",Color.BLUE,null);
+		viewObjects.add(add);
+		save = new Button(40, 40, 200, 30, "Text goes here",Color.GREEN,null);
+		viewObjects.add(save);
+		delete = new Button(40, 40, 200, 30, "Text goes here",Color.GRAY,null);
+		viewObjects.add(delete);
 		text = new TextArea(240, 40, 200, 30, "Text goes here");
 		viewObjects.add(text);
 		fileOpen = new FileOpenButton(240, 40, 200, 30, null, this);
 		viewObjects.add(fileOpen);
+		catalog = new //INPUT CATALOG HERE();
 	}
 	protected void addClicked() {
-		text.setText("Button clicked");
+		text.setText("Key" +  + k);
+		Keys k = new Keys(keyField.getText(), materialField.getText(), shapeField.getText());
+		keyField.setText("");
+		materialField.setText("");
+		shapeField.setText("");
 	}
 	
 	public void setFile(File f) {
