@@ -4,125 +4,191 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import guiTeacher.components.TextLabel;
+import guiTeacher.components.*;
 import guiTeacher.interfaces.Visible;
 import guiTeacher.userInterfaces.ClickableScreen;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.swing.JFrame;
-
-import guiTeacher.components.Action;
-import guiTeacher.components.Button;
-import guiTeacher.components.TextArea;
-import guiTeacher.components.TextLabel;
-import guiTeacher.interfaces.FileRequester;
-import guiTeacher.interfaces.Visible;
-import guiTeacher.userInterfaces.ClickableScreen;
-import guiTeacher.userInterfaces.FullFunctionScreen;
-
-public class SimonScreenRemington extends ClickableScreen implements Runnable{
-
-	private ButtonInterfaceRemington[] buttons;
-	private ProgressInterfaceRemington progress;
-	private TextLabel text;
-	private ArrayList<MoveInterfaceRemington> buttonOrder = new ArrayList<MoveInterfaceRemington>();
-	private int count;
-	private int roundNumber = 1;
-	boolean acceptingInput = false;
-	int lastSelectedButton;
+public class SimonScreenRemington extends ClickableScreen implements Runnable {
 	
-	public SimonScreenRemington(int width,int height) {
-		super(width,height);
-		Thread app = new Thread(this);
+	private static TextLabel board;
+	private ProgressInterfaceRemington progress;
+	private ArrayList<MoveInterfaceRemington> arrlist;
+	private ButtonInterfaceRemington[] buttons;
+	private int roundnumber;
+	private boolean validinput;
+	private int sequenceidx;
+	private int lastselectedbutton;
+	private Color[] colors;
+	
+	public SimonScreenRemington(int width, int height) {
+		super(width, height);
+		Thread app= new Thread(this);
 		app.start();
 	}
+	public void run() {
+		 board.setText("");
+	     nextRound();
+		
+	}
+	private void nextRound() {
+		validinput = false;
+		roundnumber++;
+		arrlist.add(randomMove());
+		progress.setRound(roundnumber);
+		progress.setSequenceSize(arrlist.size());
+		changeText("Simon's Turn");
+		board.setText("");
+		playSequence();
+		changeText("Your Turn");
+		validinput = true;
+		sequenceidx = 0;
+		
+	}
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	private void playSequence() {
+		ButtonInterfaceRemington b = null;
+		for(int i = 0; i < arrlist.size(); i++) {
+			if(b != null) {
+				b.dim();
+				b = arrlist.get(i).getButton();
+				b.highlight();
+				
+				try {
+	                Thread.sleep((int)(1000*roundnumber));
+	            } catch (InterruptedException e) {
+	                // TODO Auto-generated catch block
+	                e.printStackTrace();
+	            }
+				b.dim();
+			}
+		}
+		
+		
+		
 	}
 
 	@Override
 	public void initAllObjects(List<Visible> viewObjects) {
 		addButtons();
-		for(ButtonInterfaceRemington b: buttons) {
+		for(ButtonInterfaceRemington b:buttons) {
 			viewObjects.add(b);
 		}
 		progress = getProgress();
-		buttonOrder = new ArrayList<MoveInterfaceRemington>();
-		lastSelectedButton = -1;
-		buttonOrder.add(randomMove());
-		buttonOrder.add(randomMove());
-		roundNumber = 0;
-		viewObjects.add(progress);
-		viewObjects.add(text);
-	}
-
-	private MoveInterfaceRemington randomMove() {
-		int random = (int)(Math.random()*buttons.length);
-		while(random == lastSelectedButton) {
-			random = (int)(Math.random()*buttons.length);
+		board= new TextLabel(10,10,200,200,"testing");
+		arrlist= new ArrayList<MoveInterfaceRemington>();
+		lastselectedbutton=-1;
+		arrlist.add(randomMove());
+		arrlist.add(randomMove());
+		for(int i = 0; i < sequenceidx; i++) {
+			arrlist.add(randomMove());
 		}
-		return getMove(random);
+		roundnumber=0;
+		progress.setRound(roundnumber);
+		viewObjects.add(progress);
+		viewObjects.add(board);
+	
+
+	}
+	private MoveInterfaceRemington randomMove() {
+		int randomidx= (int)(Math.random()*buttons.length);
+		while(randomidx==lastselectedbutton) {
+			randomidx=(int)(Math.random()*buttons.length);
+		}
+		return getMove(randomidx);
+	}
+	/**
+	Placeholder until partner finishes implementation of MoveInterface
+	*/
+	private MoveInterfaceRemington getMove(int randomidx) {
+		return new MoveR(buttons[randomidx]);
 	}
 
-	private MoveInterfaceRemington getMove(int random) {
-		return null;
-	}
+	/**
+	Placeholder until partner finishes implementation of ProgressInterface
+	*/
 
 	private ProgressInterfaceRemington getProgress() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ProgressR(100, 100, 200, 200);
 	}
 
 	private void addButtons() {
-		int numberOfButtons = 4;
-		buttons = new ButtonInterfaceRemington[numberOfButtons];
-		Color[] colors = null;
-		colors[1] = Color.blue;
-		colors[2] = Color.red;
-		colors[3] = Color.green;
-		colors[4] = Color.pink;
-		for(int i = 0; i < numberOfButtons; i++) {
-			final ButtonInterfaceRemington b = getAButton();
+		
+		colors = new Color[4];
+		colors[0] = Color.BLUE;
+		colors[1] = Color.YELLOW;
+		colors[2] = Color.RED;
+		colors[3] = Color.GREEN;
+		buttons= new ButtonInterfaceRemington[4];
+		
+		for(int i=0;i<buttons.length;i++) {
+			final ButtonInterfaceRemington b=getAButton(100,i*100+50,50,50);
 			b.setColor(colors[i]);
-			b.setX(40);
-			b.setY(40);
-			b.setAction(new Action(){
+		//	b.setX(100);
+			//b.setY((i*100)+100);
+			b.setAction(new Action() {
 				
+				@Override
 				public void act() {
-					if(acceptingInput) {
-						Thread blink = new Thread(new Runnable() {
+					if(validinput) {
+						Thread blink= new Thread(new Runnable() {
+							
+							@Override
 							public void run() {
 								b.highlight();
-								try {
+								try{
 									Thread.sleep(800);
-								} catch(InterruptedException e) {
+								} catch (InterruptedException e) {
 									e.printStackTrace();
 								}
 								b.dim();
 							}
 						});
 						blink.start();
+						if(b == arrlist.get(sequenceidx).getButton()) {
+		    		    	sequenceidx++;
+		    		    }
+		    		    else {
+		    		    	progress.gameOver();
+		    		    }
+		    		    if(sequenceidx == arrlist.size()){
+		    		        Thread nextRound = new Thread(SimonScreenRemington.this);
+		    		        nextRound.start();
+		    		    }
+							
 					}
 				}
-				
 			});
-			buttons[i] = b;
+			buttons[i]=b;
 		}
 	}
+	/**
+	Placeholder until partner finishes implementation of ButtonInterface
+	 * @param j 
+	 * @param i 
+	*/
 
-	private ButtonInterfaceRemington getAButton() {
-		// TODO Auto-generated method stub
-		return null;
+	private ButtonInterfaceRemington getAButton(int x, int y,int w,int h) {
+		return new ButtonR(x, y, w, h, "",null);	
 	}
 
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
+	
+
+	
+	public static TextLabel getLabel() {
+		return board;
 	}
+	
+
+	private void changeText(String string) {
+		board.setText(string);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+	}
+	}
+
+	
 
 }
