@@ -27,7 +27,7 @@ public class ButtonR extends Button implements ButtonInterfaceRemington {
 
 	@Override
 	public void highlight() {
-		this.setColor(Color.WHITE);
+		this.setColor(Color.BLACK);
 		update();
 	}
 
