@@ -26,6 +26,6 @@ public class WinOrLoseGUI extends GUIApplication {
 		menu = new WinOrLoseScreen(getWidth(), getHeight());
 		win = new WinScreen(getWidth(), getHeight());
 		lose = new LoseScreen(getWidth(), getHeight());
-		setScreen(s);
+		setScreen(menu);
 	}
 }

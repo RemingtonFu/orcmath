@@ -15,13 +15,13 @@ public class WinOrLoseScreen extends FullFunctionScreen{
 	}
 
 	public void initAllObjects(List<Visible> viewObjects) {
-		Button win = new Button((getWidth()-100)/2,getHeight()-40,100,30,"Win the Game!",new Action() {
+		Button win = new Button((getWidth()-200),getHeight()-40,100,30,"Win the Game!",new Action() {
 
 		@Override
 		public void act() {
 			 WinOrLoseGUI.game.setScreen(WinOrLoseGUI.win);
 		}});
-		Button lose = new Button((getWidth()-100)/2,getHeight()-40,150,50,"Lose the Game!",new Action() {
+		Button lose = new Button((getWidth()-400),getHeight()-40,150,50,"Lose the Game!",new Action() {
 
 			@Override
 			public void act() {
